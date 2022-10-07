@@ -14,6 +14,10 @@ mongoose.connection.once("open", () => {
 const app = express();
 app.use(cors());
 
+app.get("/", async (req, res) => {
+  res.send("hello world");
+});
+
 app.listen(PORT, () => {
   console.log(PORT);
 });
