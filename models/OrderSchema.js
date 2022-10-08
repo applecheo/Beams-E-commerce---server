@@ -2,20 +2,17 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
-    orderID: { type: Number },
-    orderedBy: { type: String }, //email if dh
+    orderedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     status: { type: String, default: "order received" },
     products: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Product",
+      required: true,
     },
-    shoeSize: {
-      type: String,
-    },
-    clothingSize: {
-      type: String,
-      enum: ["xs", "s", "m", "l", "xl"],
-    },
-    quantity: { type: Number },
   },
   { timestamps: true }
 );
