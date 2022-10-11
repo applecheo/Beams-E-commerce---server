@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const signupController = require("./controllers/SignupController");
 const loginController = require("./controllers/LoginController");
-
+const productDetailController = require("./controllers/ProductDetailController");
+const checkoutController = require("./controllers/CheckoutController");
+const ordersController = require("./controllers/OrdersController");
 const Product = require("./models/ProductSchema");
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -21,6 +23,10 @@ app.use(express.json());
 
 app.use("/signup", signupController);
 app.use("/login", loginController);
+app.use("/men", productDetailController);
+// app.use("/women", productDetailController);
+app.use("/checkout", checkoutController);
+app.use("/account/orders", ordersController);
 
 //seed product data
 app.post("/seed", (req, res) => {
@@ -34,7 +40,7 @@ app.post("/seed", (req, res) => {
 //home page product
 app.get("/", async (req, res) => {
   try {
-    const allProduct = await Product.find({ isSold: false });
+    const allProduct = await Product.find({ isSoldOut: false });
     res.status(201).send(allProduct);
   } catch (error) {
     res.status(500).send({ error });

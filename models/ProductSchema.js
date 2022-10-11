@@ -30,7 +30,8 @@ const productSchema = new mongoose.Schema(
         "US11.5",
       ],
     },
-    isSold: { type: Boolean, default: false },
+    isSoldOut: { type: Boolean, default: false },
+    isNewArrival: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
