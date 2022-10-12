@@ -1,6 +1,5 @@
 const express = require("express");
 const Order = require("../models/OrderSchema");
-const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
