@@ -33,7 +33,6 @@ app.use("/account/profile", profileController);
 //seed product data
 app.post("/seed", (req, res) => {
   const a = req.body;
-  console.log(a);
   Product.create(a, (error, user) => {
     res.status(201).send({ msg: "Data seeded" });
   });

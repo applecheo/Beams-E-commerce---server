@@ -10,7 +10,6 @@ router.get("/:id", async (req, res) => {
     const user = await User.findById(id).populate("orders");
 
     res.status(201).send(user);
-    // console.log(orderDetails);
   } catch (error) {
     res.status(500).send({ error });
   }
