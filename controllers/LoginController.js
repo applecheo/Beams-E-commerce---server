@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate("orders", "watchList");
   if (user === null) {
     res.status(401).send({ error: "Please use a valid email and password" });
   } else if (bcrypt.compareSync(password, user.password)) {

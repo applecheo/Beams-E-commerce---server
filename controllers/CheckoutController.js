@@ -1,5 +1,6 @@
 const express = require("express");
 const Order = require("../models/OrderSchema");
+const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
@@ -56,7 +57,20 @@ router.put("/:id", async (req, res) => {
       {
         new: true,
       }
+    ).populate("orders", "products");
+    const indexOfLatestOrderProducts = addOrderToUser.orders.length - 1;
+    const latestOrderedProducts =
+      addOrderToUser.orders[indexOfLatestOrderProducts].products;
+    const updateProductToSold = await Product.updateMany(
+      {
+        _id: { $in: latestOrderedProducts },
+      },
+      { isSoldOut: true },
+      {
+        new: true,
+      }
     );
+    console.log(updateProductToSold);
     res.status(201).send(addOrderToUser);
   } catch (error) {
     res.status(400).send({ error });
