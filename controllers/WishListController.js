@@ -2,6 +2,16 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/UserSchema");
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userWishList = await User.findById(id).populate("wishList");
+    res.status(201).send(userWishList);
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+});
+
 router.put("/:id", async (req, res) => {
   const productId = req.params.id;
   const { userId } = req.body;

@@ -70,7 +70,6 @@ router.put("/:id", async (req, res) => {
         new: true,
       }
     );
-    console.log(updateProductToSold);
     res.status(201).send(addOrderToUser);
   } catch (error) {
     res.status(400).send({ error });
