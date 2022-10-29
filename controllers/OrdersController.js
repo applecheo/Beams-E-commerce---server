@@ -7,7 +7,12 @@ const router = express.Router();
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findById(id).populate("orders");
+    const user = await User.findById(id).populate({
+      path: "orders",
+      populate: {
+        path: "products",
+      },
+    });
 
     res.status(201).send(user);
   } catch (error) {
