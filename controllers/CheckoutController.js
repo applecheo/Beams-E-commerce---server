@@ -1,5 +1,5 @@
 const express = require("express");
-const HasToken = require("../Middleware");
+const HasToken = require("../middleware");
 const Order = require("../models/OrderSchema");
 const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");

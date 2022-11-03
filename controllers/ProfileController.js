@@ -1,5 +1,5 @@
 const express = require("express");
-const HasToken = require("../Middleware");
+const HasToken = require("../middleware");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
