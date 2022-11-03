@@ -1,8 +1,9 @@
 const express = require("express");
+const HasToken = require("../Middleware");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", HasToken, async (req, res) => {
   const { id } = req.params;
   try {
     const user = await User.findByIdAndDelete(id);
