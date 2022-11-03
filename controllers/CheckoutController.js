@@ -4,23 +4,6 @@ const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
-const HasToken = async (req, res, next) => {
-  const bearer = req.get("Authorization");
-  const token = bearer.split(" ")[1];
-
-  try {
-    const payload = jwt.verify(token, TOKEN);
-    const user = await User.findById(payload.userId);
-    if (user) {
-      next();
-    } else {
-      res.status(401).send({ msg: "Please Login" });
-    }
-  } catch (error) {
-    res.status(401).send({ error });
-  }
-};
-
 router.post("/", (req, res) => {
   const newOrder = req.body;
   const { products, orderedBy } = req.body;

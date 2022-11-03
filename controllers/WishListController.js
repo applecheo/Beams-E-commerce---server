@@ -1,4 +1,5 @@
 const express = require("express");
+const HasToken = require("../middleware");
 const router = express.Router();
 const User = require("../models/UserSchema");
 
@@ -12,7 +13,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", HasToken, async (req, res) => {
   const productId = req.params.id;
   const { userId } = req.body;
 
