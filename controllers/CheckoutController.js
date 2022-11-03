@@ -1,10 +1,11 @@
 const express = require("express");
+const HasToken = require("../Middleware");
 const Order = require("../models/OrderSchema");
 const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", HasToken, (req, res) => {
   const newOrder = req.body;
   const { products, orderedBy } = req.body;
   if (products.length === 0 || orderedBy === "") {
@@ -30,7 +31,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", HasToken, async (req, res) => {
   const { id } = req.params;
   const { body } = req.body;
   try {
