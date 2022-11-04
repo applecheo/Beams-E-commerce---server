@@ -9,6 +9,8 @@ const checkoutController = require("./controllers/CheckoutController");
 const ordersController = require("./controllers/OrdersController");
 const profileController = require("./controllers/ProfileController");
 const wishListController = require("./controllers/WishListController");
+const homeController = require("./controllers/HomeController");
+
 const Product = require("./models/ProductSchema");
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -26,6 +28,7 @@ app.use(express.json());
 app.use("/signup", signupController);
 app.use("/login", loginController);
 app.use("/men", productDetailController);
+app.use("/home", homeController);
 app.use("/account/wishlist", wishListController);
 app.use("/checkout", checkoutController);
 app.use("/account/orders", ordersController);
@@ -39,7 +42,7 @@ app.post("/seed", (req, res) => {
   });
 });
 
-//home page product
+// all product page
 app.get("/", async (req, res) => {
   try {
     const allProduct = await Product.find({ isSoldOut: false });

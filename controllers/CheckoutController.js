@@ -3,13 +3,14 @@ const HasToken = require("../middleware");
 const Order = require("../models/OrderSchema");
 const Product = require("../models/ProductSchema");
 const User = require("../models/UserSchema");
+
 const router = express.Router();
 
 router.post("/", HasToken, (req, res) => {
   const newOrder = req.body;
   const { products, orderedBy } = req.body;
   if (products.length === 0 || orderedBy === "") {
-    res.status(500).send({ error });
+    res.status(500).send({ error: "error" });
   } else {
     Order.create(newOrder, (error, order) => {
       if (error) {
@@ -45,7 +46,8 @@ router.put("/:id", HasToken, async (req, res) => {
     const indexOfLatestOrderProducts = addOrderToUser.orders.length - 1;
     const latestOrderedProducts =
       addOrderToUser.orders[indexOfLatestOrderProducts].products;
-    const updateProductToSold = await Product.updateMany(
+    console.log(latestOrderedProducts, "testing");
+    await Product.updateMany(
       {
         _id: { $in: latestOrderedProducts },
       },
