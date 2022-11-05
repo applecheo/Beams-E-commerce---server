@@ -18,11 +18,10 @@ router.put("/", async (req, res) => {
     const allProduct = await Product.find({
       $and: [{ isSoldOut: false }, { isNewArrival: true }],
     });
-    if (updateNewArrivals(allProduct).length <= 5) {
-      //change to 10
+    if (allProduct.length - updateNewArrivals(allProduct).length < 15) {
       return res.status(201).send(allProduct);
     } else {
-      const updatedNewArrivalProduct = await Product.updateMany(
+      await Product.updateMany(
         {
           _id: { $in: updateNewArrivals(allProduct) },
         },
@@ -31,6 +30,9 @@ router.put("/", async (req, res) => {
           new: true,
         }
       );
+      const updatedNewArrivalProduct = await Product.find({
+        $and: [{ isSoldOut: false }, { isNewArrival: true }],
+      });
       return res.status(201).send(updatedNewArrivalProduct);
     }
   } catch (error) {
@@ -38,8 +40,8 @@ router.put("/", async (req, res) => {
   }
 });
 
-const updateNewArrivals = (productDateData) => {
-  const updatedProductData = productDateData
+const updateNewArrivals = (allProduct) => {
+  const updatedProductData = allProduct
     .filter((x) => {
       const dateAfter7Days = new Date(x.createdAt);
       dateAfter7Days.setDate(dateAfter7Days.getDate() + 7);
