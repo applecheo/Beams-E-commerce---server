@@ -46,7 +46,6 @@ router.put("/:id", HasToken, async (req, res) => {
     const indexOfLatestOrderProducts = addOrderToUser.orders.length - 1;
     const latestOrderedProducts =
       addOrderToUser.orders[indexOfLatestOrderProducts].products;
-    console.log(latestOrderedProducts, "testing");
     await Product.updateMany(
       {
         _id: { $in: latestOrderedProducts },
