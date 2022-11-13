@@ -18,7 +18,7 @@ router.put("/", async (req, res) => {
     const allProduct = await Product.find({
       $and: [{ isSoldOut: false }, { isNewArrival: true }],
     });
-    if (allProduct.length - updateNewArrivals(allProduct).length < 12) {
+    if (allProduct.length - updateNewArrivals(allProduct).length < 15) {
       return res.status(201).send(allProduct);
     } else {
       await Product.updateMany(
