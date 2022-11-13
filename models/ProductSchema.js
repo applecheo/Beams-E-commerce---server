@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema(
         "US9.5",
         "US10.5",
         "US11.5",
+        "One Size",
       ],
     },
     isSoldOut: { type: Boolean, default: false },
