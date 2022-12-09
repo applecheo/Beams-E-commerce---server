@@ -13,6 +13,7 @@ const orderSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+    paid: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
