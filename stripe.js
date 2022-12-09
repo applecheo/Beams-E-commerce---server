@@ -11,7 +11,6 @@ router.post("/", async (req, res) => {
       mode: "payment",
       line_items: req.body.items.map((item) => {
         const storeItem = storeItems.find((x) => x._id == item);
-        console.log(item);
         return {
           price_data: {
             currency: "sgd",
