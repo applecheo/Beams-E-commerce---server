@@ -11,8 +11,11 @@ const ordersController = require("./controllers/OrdersController");
 const profileController = require("./controllers/ProfileController");
 const wishListController = require("./controllers/WishListController");
 const homeController = require("./controllers/HomeController");
-
+const stripe = require("./stripe");
+const jwt = require("jsonwebtoken");
+const User = require("./models/UserSchema");
 const Product = require("./models/ProductSchema");
+const TOKEN = process.env.TOKEN;
 
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT ?? 3000;
@@ -35,14 +38,15 @@ app.use("/account/wishlist", wishListController);
 app.use("/checkout", checkoutController);
 app.use("/account/orders", ordersController);
 app.use("/account/profile", profileController);
+app.use("/create-checkout-session", stripe);
 
 //seed product data
-app.post("/seed", (req, res) => {
-  const a = req.body;
-  Product.create(a, (error, user) => {
-    res.status(201).send({ msg: "Data seeded" });
-  });
-});
+// app.post("/seed", (req, res) => {
+//   const a = req.body;
+//   Product.create(a, (error, user) => {
+//     res.status(201).send({ msg: "Data seeded" });
+//   });
+// });
 
 // all product page
 app.get("/", async (req, res) => {
@@ -53,6 +57,21 @@ app.get("/", async (req, res) => {
     res.status(500).send({ error });
   }
 });
+//relogin
+app.get("/relogin", async (req, res) => {
+  const bearer = req.get("Authorization");
+  const token = bearer.split(" ")[1];
+  try {
+    const payload = jwt.verify(token, TOKEN);
+    const user = await User.findById(payload.userId);
+    if (user) {
+      res.status(201).send({ user: user });
+    }
+  } catch (error) {
+    res.status(401).send({ msg: "Please Login" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(PORT);
 });
