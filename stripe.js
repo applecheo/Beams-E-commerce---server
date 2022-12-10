@@ -3,7 +3,7 @@ const express = require("express");
 const Product = require("./models/ProductSchema");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/create-checkout-session", async (req, res) => {
   const storeItems = await Product.find({ isSoldOut: false });
   try {
     const session = await stripe.checkout.sessions.create({
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
           quantity: 1,
         };
       }),
-      success_url: `${process.env.CLIENT_URL}/checkout`,
+      success_url: `${process.env.CLIENT_URL}/checkout?id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}`,
     });
     res.json({ url: session.url });
@@ -31,4 +31,12 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/checkout-session", async (req, res) => {
+  const { id } = req.query;
+  const session = await stripe.checkout.sessions.retrieve(id, {
+    expand: ["line_items"],
+  });
+
+  res.json(session);
+});
 module.exports = router;

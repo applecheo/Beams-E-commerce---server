@@ -38,7 +38,7 @@ app.use("/account/wishlist", wishListController);
 app.use("/checkout", checkoutController);
 app.use("/account/orders", ordersController);
 app.use("/account/profile", profileController);
-app.use("/create-checkout-session", stripe);
+app.use("/", stripe);
 
 //seed product data
 // app.post("/seed", (req, res) => {
