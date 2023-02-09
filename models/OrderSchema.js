@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    status: { type: String, default: "order received" },
+    status: { type: String, default: "Order Received" },
     products: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Product",
