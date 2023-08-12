@@ -34,6 +34,18 @@ productModel.getProductById = async (productId) => {
   }
 };
 
+productModel.getProductsByName = async (productNames) => {
+  const model = await dbModel.getProduct();
+  const data = await model.find({
+    $and: [{ name: { $in: productNames } }, { isSoldOut: false }],
+  });
+  if (data) {
+    return data;
+  } else {
+    return null;
+  }
+};
+
 productModel.getLatestArrivalProducts = async () => {
   const model = await dbModel.getProduct();
   const data = await model.find({
@@ -48,7 +60,7 @@ productModel.getLatestArrivalProducts = async () => {
 
 productModel.updateProductToLatestArrival = async (updatedProduct) => {
   const model = await dbModel.getProduct();
-  const test = model.updateMany(
+  await model.updateMany(
     {
       _id: { $in: updatedProduct },
     },
@@ -57,7 +69,29 @@ productModel.updateProductToLatestArrival = async (updatedProduct) => {
       new: true,
     }
   );
-  console.log(test);
 };
+//fix
+productModel.updateProductsToSold = async (productIds) => {
+  const model = await dbModel.getProduct();
+  const updatedProduct = [];
 
+  for (let i = 0; i < productIds.length; i++) {
+    const product = await model.updateOne(
+      {
+        _id: productIds[i],
+      },
+      { $set: { isSoldOut: true } },
+      {
+        new: true,
+      }
+    );
+    updatedProduct.push(product);
+  }
+
+  if (updatedProduct.length === productIds.length) {
+    return updatedProduct;
+  } else {
+    return null;
+  }
+};
 module.exports = productModel;

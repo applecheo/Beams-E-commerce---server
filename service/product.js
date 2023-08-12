@@ -36,6 +36,17 @@ productService.getProductById = async (productId) => {
   }
 };
 
+productService.getProductsByName = async (productNames) => {
+  const products = await productModel.getProductsByName(productNames);
+  if (products) {
+    return products;
+  } else {
+    let err = new Error(`Could not get products`);
+    err.status = 404;
+    throw err;
+  }
+};
+
 productService.getLatestArrivalProducts = async () => {
   const product = await productModel.getLatestArrivalProducts();
   if (product) {
@@ -75,6 +86,17 @@ productService.updateLatestArrivalProduct = async () => {
       err.status = 404;
       throw err;
     }
+  }
+};
+
+productService.updateProductsToSold = async (productIds) => {
+  const product = await productModel.updateProductsToSold(productIds);
+  if (product) {
+    return product;
+  } else {
+    let err = new Error(`Could not update product status`);
+    err.status = 404;
+    throw err;
   }
 };
 

@@ -120,4 +120,15 @@ userService.updateUserWishlist = async (userId, productId) => {
   }
 };
 
+userService.updateUserOrder = async (orderId, userId) => {
+  const user = await userModel.updateUserOrder(orderId, userId);
+  if (user) {
+    return user;
+  } else {
+    let err = new Error(`Fail to update user order`);
+    err.status = 500;
+    throw err;
+  }
+};
+
 module.exports = userService;

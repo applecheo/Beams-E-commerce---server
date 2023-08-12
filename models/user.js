@@ -94,4 +94,20 @@ userModel.removeFromUserWishlist = async (userId, productId) => {
   }
 };
 
+userModel.updateUserOrder = async (orderId, userId) => {
+  await dbModel.getProduct();
+  const model = await dbModel.getUser();
+  const data = await model.findByIdAndUpdate(
+    userId,
+    { $addToSet: { orders: orderId } },
+    {
+      new: true,
+    }
+  );
+  if (data) {
+    return data;
+  } else {
+    return null;
+  }
+};
 module.exports = userModel;

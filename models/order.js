@@ -30,4 +30,29 @@ orderModel.getOrderDetails = async (orderId) => {
   }
 };
 
+orderModel.createOrder = async (newOrder) => {
+  const model = await dbModel.getOrder();
+  const data = await model.create(newOrder);
+  if (data) {
+    return data;
+  } else {
+    return null;
+  }
+};
+
+orderModel.updateOrder = async (productIds, userId) => {
+  const model = await dbModel.getOrder();
+  const data = await model.findOneAndUpdate(
+    { $and: [{ products: { $in: productIds } }, { orderedBy: userId }] },
+    { paid: true },
+    {
+      new: true,
+    }
+  );
+  if (data) {
+    return data;
+  } else {
+    return null;
+  }
+};
 module.exports = orderModel;
