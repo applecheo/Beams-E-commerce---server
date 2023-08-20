@@ -3,15 +3,14 @@ const userModel = require("./models/user");
 
 const TOKEN = process.env.TOKEN;
 
-const HasToken = async (req, res, next) => {
-  const bearer = req.get("Authorization");
+const getUserId = async (bearer) => {
   const token = bearer.split(" ")[1];
 
   const payload = jwt.verify(token, TOKEN);
   const user = await userModel.getUserById(payload.userId);
 
   if (user) {
-    next();
+    return user.userId;
   } else {
     let err = new Error(`Please Login`);
     err.status = 404;
@@ -19,4 +18,4 @@ const HasToken = async (req, res, next) => {
   }
 };
 
-module.exports = HasToken;
+module.exports = getUserId;
